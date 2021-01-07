@@ -1,0 +1,28 @@
+/*
+ * LED
+ * This program sets the brightness of a single LED, and a potentiometer creates a voltage divider to measure the voltage
+ * from 0 to 5V through the potentiometer
+ * With a simple change - analogWrite(ledPIN, volts) - the potentiometer now sets the brightness
+ */
+
+int setLED = 180; //represent the output brightness for the LED (0-255)
+int vInput; //represents an input volrage of 0-5V as an integer ranging from 0 to 1023
+const int ledPIN = 9; //name output pin to LED
+const int inputPIN = A0; //input pin from the potentiometer - must be analog in (A0-A5)
+
+
+void setup() {
+  pinMode(ledPIN, OUTPUT); //initialize pin for output
+  pinMode (inputPIN, INPUT); //initialize pin for input
+
+  Serial.begin(9600); //start serial port at 9600 bps (bits per second) (aka baud rate)
+}
+
+void loop() {
+  vInput = analogRead(inputPIN); //read input from inputPin and save value (0-1023) to vInput
+  double volts = vInput * 5.0 / 1023; //calculate the voltage from vInput and save to volts
+  Serial.println(volts); //prints voltage value
+  
+  analogWrite(ledPIN, vInput/4); //output PWM signal to ledPin with duty cycle of setLED/255
+  delay(2);
+}
